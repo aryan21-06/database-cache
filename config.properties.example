@@ -1,0 +1,9 @@
+# Database connection
+db.url=jdbc:mysql://localhost:3306/dbcache
+db.username=root
+db.password=yourpassword
+
+# Cache settings
+cache.capacity=100
+cache.ttl.seconds=60
+cache.policy=LRU
