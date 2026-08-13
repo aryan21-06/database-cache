@@ -1,39 +1,38 @@
 package com.dbcache.config;
 
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
 
 public class Config {
     
-    private static Properties props = new Properties();
+    private static final Properties props = new Properties();
+    private static final String CONFIG_FILE = "config.properties";
     
     public static void load() throws IOException {
-        // TODO: Load config.properties
+        try (InputStream input = new FileInputStream(CONFIG_FILE)) {
+            props.load(input);
+        }
     }
     
     public static String getDbUrl() {
-        // TODO: Return database URL
-        return null;
+        return props.getProperty("db.url");
     }
     
     public static String getDbUsername() {
-        // TODO: Return database username
-        return null;
+        return props.getProperty("db.username");
     }
     
     public static String getDbPassword() {
-        // TODO: Return database password
-        return null;
+        return props.getProperty("db.password");
     }
     
     public static int getCacheCapacity() {
-        // TODO: Return cache capacity
-        return 100;
+        return Integer.parseInt(props.getProperty("cache.capacity", "100"));
     }
     
     public static long getCacheTtlSeconds() {
-        // TODO: Return cache TTL in seconds
-        return 60;
+        return Long.parseLong(props.getProperty("cache.ttl.seconds", "60"));
     }
 }

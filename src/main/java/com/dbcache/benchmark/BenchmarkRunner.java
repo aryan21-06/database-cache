@@ -1,14 +1,13 @@
 package com.dbcache.benchmark;
 
+import java.sql.SQLException;
+import java.util.List;
+
 import com.dbcache.cache.CacheConfig;
 import com.dbcache.cache.EvictionPolicy;
 import com.dbcache.database.DatabaseManager;
 import com.dbcache.handler.RequestHandler;
 import com.dbcache.model.QueryResponse;
-
-import java.util.List;
-import java.lang.System;
-import java.sql.SQLException;
 
 public class BenchmarkRunner {
     
@@ -97,4 +96,3 @@ public class BenchmarkRunner {
     }
         
     }
-}

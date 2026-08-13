@@ -36,9 +36,19 @@ public class DatabaseManager {
         List<List<Object>> rows = new ArrayList<>();
         
         // TODO: Extract column names
+        for(int i=1;i<=columnCount;i++){
+            columns.add(metaData.getColumnName(i));
+        }
         // TODO: Extract rows
-        
+            while (rs.next()) {
+            List<Object> row = new ArrayList<>();
+            for (int i = 1; i <= columnCount; i++) {
+                row.add(rs.getObject(i));
+            }
+            rows.add(row);
+        }
         return new QueryResult(columns, rows);
+
     }
     
     public void close() throws SQLException {
