@@ -32,4 +32,9 @@ public class ParameterRanges {
     public static final String[] DEPARTMENT_NAMES = {
         "Computer Science", "Mathematics", "Physics", "Chemistry", "Biology"
     };
+
+    // Department heads
+    public static final String[] DEPARTMENT_HEADS = {
+        "Dr. Smith", "Dr. Johnson", "Dr. Williams", "Dr. Brown", "Dr. Jones"
+    };
 }

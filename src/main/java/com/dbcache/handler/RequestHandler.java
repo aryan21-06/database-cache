@@ -44,10 +44,11 @@ public class RequestHandler {
             return QueryResponse.success(result, cacheHit, responseTimeMs, databaseAccessed);
         }
         boolean cacheHit = false;
-        boolean databaseAccessed = true;
+        boolean databaseAccessed;
         // TODO: If cache miss, query database
         try{
             result= dbManager.executeQuery(sql);
+            databaseAccessed = true;
         }catch(SQLException se){
             return QueryResponse.error("Database Error"+""+se.getMessage());
         }

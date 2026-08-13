@@ -8,16 +8,14 @@ public class WorkloadGenerator {
     private final DistributionEngine distributionEngine;
     
     public WorkloadGenerator() {
-        // TODO: Initialize workload generator
         this.queryBuilder = new QueryBuilder();
         this.distributionEngine = new DistributionEngine();
     }
     
     public List<String> generateWorkload(int totalRequests, int uniqueQueries) {
-        // TODO: Generate unique queries
-        // TODO: Apply MODERATE distribution
-        // TODO: Return workload
-        
-        return null;
+        return distributionEngine.applyModerateDistribution(
+            queryBuilder.generateUniqueQueries(uniqueQueries), 
+            totalRequests
+            );
     }
 }

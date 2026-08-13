@@ -435,7 +435,7 @@ private BenchmarkMetrics runWithCache(List<String> workload) {
   
     for (String sql : workload) {
         QueryResponse response = requestHandler.executeQuery(sql);
-    
+  
         if (response.isCacheHit()) {
             cacheHits++;
         } else {
@@ -807,7 +807,7 @@ public List<String> applyModerateDistribution(
     for (int i = 0; i < totalRequests; i++) {
         int randomWeight = random.nextInt(totalWeight);
         int cumulativeWeight = 0;
-    
+  
         for (int j = 0; j < n; j++) {
             cumulativeWeight += weights[j];
             if (randomWeight < cumulativeWeight) {

@@ -50,3 +50,4 @@ Thumbs.db
 
 # Config files with sensitive data
 config.properties
+/bin/
