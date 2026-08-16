@@ -5,13 +5,14 @@
 You are responsible for two things:
 
 1. **Setting up the MySQL database** (Part 1)
+
    - Installing MySQL on your computer
    - Creating the database
    - Running the SQL scripts to create tables
    - Adding sample data
    - Making sure everything works
-
 2. **Implementing the JDBC layer** (Part 2)
+
    - Understanding how Java connects to MySQL
    - Implementing the `DatabaseManager` class
    - Testing that Java can query the database
@@ -33,6 +34,7 @@ Don't worry if you're new to databases or JDBC — this guide will walk you thro
 - **Database**: Stores data in tables (like multiple spreadsheets), can handle millions of rows, multiple users at once
 
 Our application will:
+
 - **Store data** in MySQL (students, courses, enrollments, etc.)
 - **Query data** using SQL (SELECT statements)
 - **Cache results** in Java memory to avoid querying MySQL every time
@@ -58,6 +60,7 @@ You don't need to understand all of this — you just need to get MySQL running 
 **Option B: Using Chocolatey (if you have it)**
 
 Open PowerShell as Administrator and run:
+
 ```powershell
 choco install mysql
 ```
@@ -65,6 +68,7 @@ choco install mysql
 ### For Linux (Ubuntu/Debian)
 
 Open terminal and run:
+
 ```bash
 sudo apt update
 sudo apt install mysql-server
@@ -76,17 +80,20 @@ During installation, it will ask for a root password. Use something simple like 
 
 **Windows:**
 Open Command Prompt and run:
+
 ```cmd
 mysql --version
 ```
 
 **Linux:**
 Open terminal and run:
+
 ```bash
 mysql --version
 ```
 
 You should see something like:
+
 ```
 mysql  Ver 8.0.36 for Win64 on x86_64 (MySQL Community Server - GPL)
 ```
@@ -116,6 +123,7 @@ sudo systemctl enable mysql
 ```
 
 To check if it's running:
+
 ```bash
 sudo systemctl status mysql
 ```
@@ -127,11 +135,13 @@ sudo systemctl status mysql
 ### Using Command Line
 
 **Windows:**
+
 ```cmd
 mysql -u root -p
 ```
 
 **Linux:**
+
 ```bash
 mysql -u root -p
 ```
@@ -139,6 +149,7 @@ mysql -u root -p
 It will ask for your password. Enter the password you set during installation.
 
 You should see:
+
 ```
 Welcome to the MySQL monitor.  Commands end with ; or \g.
 mysql>
@@ -151,12 +162,14 @@ Type `exit` to quit.
 If command line is confusing, use a GUI tool:
 
 **Option A: MySQL Workbench (Recommended)**
+
 - Download: https://dev.mysql.com/downloads/workbench/
 - Open MySQL Workbench
 - Click the **localhost** connection (it should already be there)
 - Enter your root password
 
 **Option B: HeidiSQL (Windows only, lightweight)**
+
 - Download: https://www.heidisql.com/
 - Open HeidiSQL
 - Hostname: `localhost`
@@ -173,26 +186,29 @@ Now we'll create the database and tables.
 ### Using Command Line
 
 1. Connect to MySQL:
+
    ```bash
    mysql -u root -p
    ```
-
 2. Run the schema script:
+
    ```sql
    source /path/to/database-cache/sql/schema.sql
    ```
-   
+
    **Windows example:**
+
    ```sql
    source C:/Users/YourName/database-cache/sql/schema.sql
    ```
-   
+
    **Linux example:**
+
    ```sql
    source /home/yourname/database-cache/sql/schema.sql
    ```
-
 3. Run the seed script:
+
    ```sql
    source /path/to/database-cache/sql/seed.sql
    ```
@@ -218,12 +234,14 @@ Now we'll create the database and tables.
 If the scripts don't work, you can run the commands manually.
 
 **Create database:**
+
 ```sql
 CREATE DATABASE IF NOT EXISTS dbcache;
 USE dbcache;
 ```
 
 **Create tables:**
+
 ```sql
 CREATE TABLE departments (
     id INT PRIMARY KEY AUTO_INCREMENT,
@@ -263,6 +281,7 @@ CREATE TABLE enrollments (
 **Insert sample data:**
 
 Run the `sql/seed.sql` file. It contains stored procedures that generate:
+
 - 5 departments
 - 100 courses
 - 1000 students
@@ -338,22 +357,21 @@ If all queries work and counts are correct, you're done with Part 1!
 The application needs to know how to connect to your database.
 
 1. Copy the example config file:
+
    ```bash
    cp config.properties.example config.properties
    ```
-
 2. Open `config.properties` in a text editor
-
 3. Update the database settings:
+
    ```properties
    # Database connection
    db.url=jdbc:mysql://localhost:3306/dbcache
    db.username=root
    db.password=YOUR_PASSWORD_HERE
    ```
-   
-   Replace `YOUR_PASSWORD_HERE` with your actual MySQL password.
 
+   Replace `YOUR_PASSWORD_HERE` with your actual MySQL password.
 4. Save the file
 
 **Important**: The `config.properties` file is in `.gitignore`, so your password won't be committed to git.
@@ -432,10 +450,12 @@ GROUP BY department_id;
 **Solution**: MySQL is not in your PATH.
 
 **Windows:**
+
 - Use the full path: `C:\Program Files\MySQL\MySQL Server 8.0\bin\mysql.exe -u root -p`
 - Or use MySQL Workbench instead
 
 **Linux:**
+
 ```bash
 # Try this
 /usr/bin/mysql -u root -p
@@ -456,11 +476,13 @@ which mysql
 **Solution**: MySQL service is not running.
 
 **Windows:**
+
 - Open Services (`services.msc`)
 - Find MySQL80
 - Right-click → Start
 
 **Linux:**
+
 ```bash
 sudo systemctl start mysql
 ```
@@ -548,6 +570,7 @@ Password: (your password)
 ## Summary
 
 **What you did:**
+
 1. ✅ Installed MySQL
 2. ✅ Started MySQL service
 3. ✅ Created the `dbcache` database
@@ -557,11 +580,13 @@ Password: (your password)
 7. ✅ Configured `config.properties`
 
 **What happens next:**
+
 - Now you'll implement the JDBC layer (Part 2)
 - The application will use your DatabaseManager to query the database
 - The cache will store results to avoid repeated queries
 
 **If something breaks:**
+
 - Check the troubleshooting section
 - Ask the project manager for help
 - Google the error message (most MySQL errors have simple solutions)
@@ -575,6 +600,7 @@ Password: (your password)
 **JDBC** stands for **Java Database Connectivity**. It's a bridge that lets Java talk to databases.
 
 Think of it like this:
+
 - **MySQL** speaks SQL (the database language)
 - **Java** speaks Java (the programming language)
 - **JDBC** translates between them
@@ -602,17 +628,18 @@ Convert to QueryResult (our custom class)
 ### Key JDBC Concepts
 
 1. **Connection**: A link between Java and the database
+
    - Like opening a phone call to the database
    - Needs URL, username, password
-
 2. **Statement**: A SQL query you want to run
-   - Like saying something during the phone call
 
+   - Like saying something during the phone call
 3. **ResultSet**: The results returned by the database
+
    - Like hearing the answer on the phone
    - Temporary — disappears when connection closes
-
 4. **ResultSetMetaData**: Information about the ResultSet
+
    - Column names, number of columns, data types
 
 ---
@@ -622,15 +649,18 @@ Convert to QueryResult (our custom class)
 You need to implement these files:
 
 ### 1. DatabaseManager.java
+
 **File**: `src/main/java/com/dbcache/database/DatabaseManager.java`
 
 **What it does**:
+
 - Connects to MySQL using JDBC
 - Executes SQL queries
 - Converts ResultSet to QueryResult
 - Manages the database connection
 
 **Key methods you need to implement**:
+
 ```java
 public DatabaseManager(String url, String username, String password)
 public QueryResult executeQuery(String sql)
@@ -638,14 +668,17 @@ public void close()
 ```
 
 ### 2. QueryResult.java
+
 **File**: `src/main/java/com/dbcache/database/QueryResult.java`
 
 **What it does**:
+
 - Stores query results in Java objects
 - Contains column names and row data
 - Independent of JDBC (can be cached)
 
 **Key methods**:
+
 ```java
 public List<String> getColumns()
 public List<List<Object>> getRows()
@@ -663,9 +696,9 @@ The skeleton file already exists. Here's what each part does:
 
 ```java
 public class DatabaseManager {
-    
+  
     private final Connection connection;  // The JDBC connection
-    
+  
     // Constructor: Creates a connection to MySQL
     public DatabaseManager(String url, String username, String password) 
             throws SQLException {
@@ -675,7 +708,7 @@ public class DatabaseManager {
         // password: "yourpassword"
         this.connection = DriverManager.getConnection(url, username, password);
     }
-    
+  
     // Execute a query and return results
     public QueryResult executeQuery(String sql) throws SQLException {
         // 1. Create a Statement object
@@ -685,29 +718,29 @@ public class DatabaseManager {
         // 5. Close resources
         try (Statement stmt = connection.createStatement();
              ResultSet rs = stmt.executeQuery(sql)) {
-            
+        
             return convertResultSet(rs);
         }
     }
-    
+  
     // Convert JDBC ResultSet to our QueryResult
     private QueryResult convertResultSet(ResultSet rs) throws SQLException {
         // 1. Get column names from ResultSetMetaData
         // 2. Loop through rows
         // 3. Extract data from each row
         // 4. Build QueryResult object
-        
+    
         ResultSetMetaData metaData = rs.getMetaData();
         int columnCount = metaData.getColumnCount();
-        
+    
         List<String> columns = new ArrayList<>();
         List<List<Object>> rows = new ArrayList<>();
-        
+    
         // TODO: Extract column names
         for (int i = 1; i <= columnCount; i++) {
             columns.add(metaData.getColumnName(i));
         }
-        
+    
         // TODO: Extract rows
         while (rs.next()) {
             List<Object> row = new ArrayList<>();
@@ -716,10 +749,10 @@ public class DatabaseManager {
             }
             rows.add(row);
         }
-        
+    
         return new QueryResult(columns, rows);
     }
-    
+  
     // Close the connection
     public void close() throws SQLException {
         if (connection != null && !connection.isClosed()) {
@@ -735,27 +768,27 @@ This is simpler — just a data container:
 
 ```java
 public class QueryResult {
-    
+  
     private final List<String> columns;      // Column names
     private final List<List<Object>> rows;   // Row data
-    
+  
     public QueryResult(List<String> columns, List<List<Object>> rows) {
         this.columns = columns;
         this.rows = rows;
     }
-    
+  
     public List<String> getColumns() {
         return columns;
     }
-    
+  
     public List<List<Object>> getRows() {
         return rows;
     }
-    
+  
     public int getRowCount() {
         return rows.size();
     }
-    
+  
     public int getColumnCount() {
         return columns.size();
     }
@@ -775,12 +808,14 @@ jdbc:mysql://localhost:3306/dbcache
 ```
 
 Breaking it down:
+
 - `jdbc:mysql://` → Use MySQL JDBC driver
 - `localhost` → Database is on this computer
 - `3306` → Default MySQL port
 - `dbcache` → Database name
 
 This comes from `config.properties`:
+
 ```properties
 db.url=jdbc:mysql://localhost:3306/dbcache
 db.username=root
@@ -794,21 +829,22 @@ Open `src/main/java/com/dbcache/database/DatabaseManager.java`
 **What to implement**:
 
 1. **Constructor** (already done in skeleton):
-   - Creates connection using `DriverManager.getConnection()`
 
+   - Creates connection using `DriverManager.getConnection()`
 2. **executeQuery()** (already done in skeleton):
+
    - Creates a Statement
    - Executes the SQL query
    - Gets the ResultSet
    - Calls `convertResultSet()`
-
 3. **convertResultSet()** (you need to complete this):
+
    - Get column names from `ResultSetMetaData`
    - Loop through rows using `rs.next()`
    - Extract each column value using `rs.getObject(i)`
    - Build the QueryResult
-
 4. **close()** (already done in skeleton):
+
    - Closes the connection
 
 ### Step 3: Implement QueryResult
@@ -816,6 +852,7 @@ Open `src/main/java/com/dbcache/database/DatabaseManager.java`
 Open `src/main/java/com/dbcache/database/QueryResult.java`
 
 This is already mostly done. Just make sure:
+
 - Constructor stores columns and rows
 - Getters return the correct data
 - `getRowCount()` returns `rows.size()`
@@ -831,30 +868,30 @@ public class JdbcTest {
         try {
             // Load config
             Config.load();
-            
+        
             // Create DatabaseManager
             DatabaseManager dbManager = new DatabaseManager(
                 Config.getDbUrl(),
                 Config.getDbUsername(),
                 Config.getDbPassword()
             );
-            
+        
             // Execute a query
             QueryResult result = dbManager.executeQuery("SELECT * FROM students LIMIT 5");
-            
+        
             // Print results
             System.out.println("Columns: " + result.getColumns());
             System.out.println("Row count: " + result.getRowCount());
-            
+        
             for (List<Object> row : result.getRows()) {
                 System.out.println(row);
             }
-            
+        
             // Close connection
             dbManager.close();
-            
+        
             System.out.println("JDBC test passed!");
-            
+        
         } catch (Exception e) {
             System.err.println("JDBC test failed: " + e.getMessage());
             e.printStackTrace();
@@ -864,6 +901,7 @@ public class JdbcTest {
 ```
 
 **Expected output**:
+
 ```
 Columns: [id, name, email, department_id, year, gpa]
 Row count: 5
@@ -910,7 +948,8 @@ dbManager.executeQuery(
 
 **Cause**: MySQL JDBC driver is not in the classpath.
 
-**Solution**: 
+**Solution**:
+
 - Check `pom.xml` has the MySQL connector dependency:
   ```xml
   <dependency>
@@ -926,6 +965,7 @@ dbManager.executeQuery(
 **Cause**: Can't connect to MySQL server.
 
 **Solution**:
+
 - Check MySQL is running (see Part 1, Step 2)
 - Check the URL is correct: `jdbc:mysql://localhost:3306/dbcache`
 - Check port 3306 is not blocked by firewall
@@ -935,6 +975,7 @@ dbManager.executeQuery(
 **Cause**: Wrong username or password.
 
 **Solution**:
+
 - Check `config.properties` has correct username and password
 - Test connection manually: `mysql -u root -p`
 - If password is wrong, reset it (Google: "reset mysql root password")
@@ -944,6 +985,7 @@ dbManager.executeQuery(
 **Cause**: Database doesn't exist.
 
 **Solution**:
+
 - Run the schema script again (Part 1, Step 4)
 - Or manually: `CREATE DATABASE dbcache;`
 
@@ -952,6 +994,7 @@ dbManager.executeQuery(
 **Cause**: Tables haven't been created.
 
 **Solution**:
+
 - Run `sql/schema.sql`
 - Run `sql/seed.sql`
 - Verify with: `SHOW TABLES;` in MySQL
@@ -961,6 +1004,7 @@ dbManager.executeQuery(
 **Cause**: Trying to access ResultSet after connection is closed.
 
 **Solution**:
+
 - This is why we convert ResultSet to QueryResult immediately
 - Never store ResultSet — always convert it to QueryResult
 - QueryResult is independent of the connection
@@ -970,6 +1014,7 @@ dbManager.executeQuery(
 **Cause**: Trying to access a column that doesn't exist.
 
 **Solution**:
+
 - Check column count: `metaData.getColumnCount()`
 - Remember: columns are 1-indexed (start at 1, not 0)
 - Example: `rs.getObject(1)` gets the first column
@@ -1050,6 +1095,7 @@ for (int i = 1; i <= columnCount; i++) {
 ResultSet is tied to the JDBC connection. If you close the connection, ResultSet becomes invalid.
 
 **Problem**:
+
 ```java
 ResultSet rs = stmt.executeQuery("SELECT * FROM students");
 connection.close();  // Close connection
@@ -1057,6 +1103,7 @@ rs.next();  // ERROR! ResultSet is closed
 ```
 
 **Solution**: Convert ResultSet to QueryResult immediately:
+
 ```java
 ResultSet rs = stmt.executeQuery("SELECT * FROM students");
 QueryResult result = convertResultSet(rs);  // Copy data to QueryResult
@@ -1167,16 +1214,19 @@ Return to user
 ### What Other Components Expect
 
 **RequestHandler** expects:
+
 - `DatabaseManager.executeQuery(sql)` returns a `QueryResult`
 - `QueryResult` has columns and rows
 - If query fails, throws `SQLException`
 
 **CacheEngine** expects:
+
 - `QueryResult` is a plain Java object
 - Can be stored in a HashMap
 - Doesn't depend on JDBC connection
 
 **UI** expects:
+
 - `QueryResult.getColumns()` returns column names
 - `QueryResult.getRows()` returns row data
 - Can display in JTable
@@ -1220,7 +1270,7 @@ stmt.close();
 // Automatically closes resources
 try (Statement stmt = conn.createStatement();
      ResultSet rs = stmt.executeQuery(sql)) {
-    
+  
     while (rs.next()) {
         // Process results
     }
@@ -1243,6 +1293,7 @@ rs.getColumnName(i)    // Get column name (via metaData)
 ## Summary
 
 **What you did:**
+
 1. ✅ Set up MySQL database (Part 1)
 2. ✅ Understood what JDBC is
 3. ✅ Implemented DatabaseManager
@@ -1251,11 +1302,13 @@ rs.getColumnName(i)    // Get column name (via metaData)
 6. ✅ Verified queries work correctly
 
 **What happens next:**
+
 - The cache team will use your DatabaseManager
 - When there's a cache miss, they'll call `dbManager.executeQuery(sql)`
 - Your QueryResult will be stored in the cache
 
 **If something breaks:**
+
 - Check the JDBC troubleshooting section
 - Test connection manually with `mysql -u root -p`
 - Verify `config.properties` has correct credentials
