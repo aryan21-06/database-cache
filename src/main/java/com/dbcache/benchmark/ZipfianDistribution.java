@@ -45,6 +45,7 @@ public class ZipfianDistribution {
             cumulative[i] = totalWeight;
         }
 
+        //normalisation
         for (int i = 0; i < n; i++) {
             cumulative[i] /= totalWeight;
         }
@@ -52,6 +53,7 @@ public class ZipfianDistribution {
         return cumulative;
     }
 
+    // binary search
     private int sample(double[] cumulative) {
         double r = random.nextDouble();
         int lo = 0;

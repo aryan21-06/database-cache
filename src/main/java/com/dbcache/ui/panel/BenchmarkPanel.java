@@ -70,8 +70,8 @@ public class BenchmarkPanel extends JPanel {
         sc.weightx = 1.0;
         sc.insets  = new Insets(7, 0, 7, 16);
 
-        totalRequestsSpinner = styledSpinner(new SpinnerNumberModel(10000, 100, 1000000, 100));
-        uniqueQueriesSpinner = styledSpinner(new SpinnerNumberModel(1000,   10,  100000,  10));
+        totalRequestsSpinner = styledSpinner(new SpinnerNumberModel(10000, 100, 100000, 100));
+        uniqueQueriesSpinner = styledSpinner(new SpinnerNumberModel(1000,   10,  10000,  10));
         cacheCapacitySpinner = styledSpinner(new SpinnerNumberModel(100,    10,   50000,  10));
         ttlSpinner           = styledSpinner(new SpinnerNumberModel(60,      1,   3600,   1));
 
